@@ -14,7 +14,7 @@ public class CommonData extends ViewModel
         selectedUser.setValue(null);
 
         userList = new MutableLiveData<UserList>();
-        userList.setValue(null);
+        userList.setValue(new UserList());
     }
 
     public void setSelectedUser(User value)
