@@ -17,8 +17,8 @@ import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import javax.net.ssl.HttpsURLConnection;
@@ -45,9 +45,17 @@ public class UsersFragment extends Fragment
                         .appendQueryParameter("extras", "url_s")
                         .build().toString();
 
-        URL url = new URL(urlString);
-        HttpsURLConnection conn;
+        URL url;
+        try
+        {
+            url = new URL(urlString);
+        }
+        catch(MalformedURLException e)
+        {
+            //something
+        }
 
+        HttpsURLConnection conn;
         try
         {
             conn = (HttpsURLConnection) url.openConnection();
@@ -66,12 +74,23 @@ public class UsersFragment extends Fragment
             }
 
             //download data
-            String download = IOUtils.toString( conn.getInputStream(), StandardCharsets.UTF_8);
+            String download;
 
+            try
+            {
+                download = IOUtils.toString( conn.getInputStream(), StandardCharsets.UTF_8);
+            }
+            catch(IOException e)
+            {
+                //something
+            }
+
+            //get list of users from json placeholder
             JSONArray jUserList =  new JSONArray(download);
-
+            //for each user
             for(int ii = 0; ii < jUserList.length(); ii++)
             {
+                //get details of the user
                 JSONObject jUser = jUserList.getJSONObject(ii);
                 JSONObject jAddress = jUser.getJSONObject("address");
                 JSONObject jDetails = jUser.getJSONObject("company");
@@ -87,10 +106,9 @@ public class UsersFragment extends Fragment
                 String details = jDetails.getString("name") + "\n" +
                         jDetails.getString("catchPhrase") + "\n" +
                         jDetails.getString("bs") + "\n";
-
                 int id = jUser.getInt("id");
 
-
+                //add user to UserList in CommonData using details gathered
                 data.add( new User(id, username, phone, email, address, website, details) );
             }
 
@@ -101,6 +119,7 @@ public class UsersFragment extends Fragment
         }
         finally
         {
+            //end connection
             conn.disconnect();
         }
     }
@@ -175,7 +194,7 @@ public class UsersFragment extends Fragment
         }
     }
 
-    private class MyDataVHolder extends RecyclerView.ViewHolder
+    private static class MyDataVHolder extends RecyclerView.ViewHolder
     {
         private final TextView textView;
         private final ConstraintLayout userView;
