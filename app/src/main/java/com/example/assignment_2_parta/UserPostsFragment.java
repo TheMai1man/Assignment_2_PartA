@@ -7,6 +7,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +40,8 @@ public class UserPostsFragment extends Fragment
 
         String userId = String.valueOf(mViewModel.getSelectedUser().getUserId());
 
+        Log.d("UserID",userId);
+
         UserPostsRetrievalThread postsThread = new UserPostsRetrievalThread(requireActivity(), mViewModel, userId );
         postsThread.start();
 
@@ -48,10 +52,8 @@ public class UserPostsFragment extends Fragment
             {
                 if(postList != null)
                 {
-                    if(data == null)
-                    {
-                        data = mViewModel.getPostList();
-                    }
+                    data = mViewModel.getPostList();
+                    Log.d("postsLoad",String.valueOf(data.size()));
 
                     MyAdapter adapter = new MyAdapter(data);
                     rv.setAdapter(adapter);

@@ -2,6 +2,8 @@ package com.example.assignment_2_parta;
 
 import android.app.Activity;
 import android.net.Uri;
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,6 +36,8 @@ public class UserPostsRetrievalThread extends Thread
         {
             //get list of posts from json placeholder
             JSONArray jUserPosts = new JSONArray(download);
+
+            Log.d("numPosts",String.valueOf(jUserPosts.length()));
 
             //for each post
             for(int ii = 0; ii < jUserPosts.length(); ii++)
