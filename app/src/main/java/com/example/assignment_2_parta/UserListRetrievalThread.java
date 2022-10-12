@@ -2,8 +2,6 @@ package com.example.assignment_2_parta;
 
 import android.app.Activity;
 import android.net.Uri;
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,9 +9,9 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class UserListRetrievalThread extends Thread
 {
-    private final String baseUrl;
-    private final RemoteUtilities remoteUtilities;
-    private final CommonData mViewModel;
+    private String baseUrl;
+    private RemoteUtilities remoteUtilities;
+    private CommonData mViewModel;
 
     public UserListRetrievalThread(Activity uiActivity, CommonData mViewModel)
     {
@@ -24,13 +22,14 @@ public class UserListRetrievalThread extends Thread
 
     public void run()
     {
-        UserList data = new UserList();
         String download = getUserListFromUrl();
+        UserList data = new UserList();
 
         try
         {
             //get list of users from json placeholder
             JSONArray jUserList =  new JSONArray(download);
+
             //for each user
             for(int ii = 0; ii < jUserList.length(); ii++)
             {
@@ -55,13 +54,13 @@ public class UserListRetrievalThread extends Thread
                 //add user to UserList in CommonData using details gathered
                 data.add( new User(id, username, phone, email, address, website, details) );
             }
+
+            mViewModel.setUserList(data);
         }
         catch(JSONException e)
         {
             e.printStackTrace();
         }
-
-        mViewModel.setUserList(data);
 
         try
         {
@@ -71,7 +70,6 @@ public class UserListRetrievalThread extends Thread
         {
             e.printStackTrace();
         }
-
     }
 
     private String getUserListFromUrl()

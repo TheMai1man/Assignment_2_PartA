@@ -7,14 +7,18 @@ public class CommonData extends ViewModel
 {
     public MutableLiveData<User> selectedUser;
     public MutableLiveData<UserList> userList;
+    public MutableLiveData<PostList> postList;
 
     public CommonData()
     {
-        selectedUser = new MutableLiveData<User>();
-        selectedUser.setValue(null);
+        this.selectedUser = new MutableLiveData<User>();
+        this.selectedUser.setValue(null);
 
-        userList = new MutableLiveData<UserList>();
-        userList.setValue(new UserList());
+        this.userList = new MutableLiveData<UserList>();
+        this.userList.setValue(new UserList());
+
+        this.postList = new MutableLiveData<PostList>();
+        this.postList.setValue(new PostList());
     }
 
     public void setSelectedUser(User value)
@@ -33,5 +37,14 @@ public class CommonData extends ViewModel
     public UserList getUserList()
     {
         return this.userList.getValue();
+    }
+
+    public void setPostList(PostList value)
+    {
+        this.postList.setValue(value);
+    }
+    public PostList getPostList()
+    {
+        return this.postList.getValue();
     }
 }

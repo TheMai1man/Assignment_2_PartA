@@ -8,6 +8,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,17 +23,6 @@ public class UsersFragment extends Fragment
     public UsersFragment() {}
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        mViewModel = new ViewModelProvider(requireActivity()).get(CommonData.class);
-        data = new UserList();
-
-
-        data = mViewModel.getUserList();
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup ui, Bundle savedInstanceState)
     {
         return inflater.inflate(R.layout.fragment_recyclerview, ui, false);
@@ -41,9 +32,16 @@ public class UsersFragment extends Fragment
     {
         super.onViewCreated(view, savedInstanceState);
 
+        mViewModel = new ViewModelProvider(requireActivity()).get(CommonData.class);
+
         RecyclerView rv = (RecyclerView)view.findViewById(R.id.recyclerView);
         rv.setLayoutManager(new LinearLayoutManager( requireActivity(),
                                                 LinearLayoutManager.VERTICAL, false));
+
+        if(data == null)
+        {
+            data = mViewModel.getUserList();
+        }
 
         MyAdapter adapter = new MyAdapter(data);
         rv.setAdapter(adapter);
@@ -51,17 +49,17 @@ public class UsersFragment extends Fragment
 
     private class MyAdapter extends RecyclerView.Adapter<MyDataVHolder>
     {
-        UserList userList;
+        UserList data;
 
         public MyAdapter(UserList value)
         {
-            userList = value;
+            data = value;
         }
 
         @Override
         public int getItemCount()
         {
-            return userList.size();
+            return data.size();
         }
 
         @NonNull
@@ -75,7 +73,7 @@ public class UsersFragment extends Fragment
         @Override
         public void onBindViewHolder(MyDataVHolder vh, int index)
         {
-            User user = userList.get(index);
+            User user = data.get(index);
             vh.bind(user);
 
             vh.userView.setOnClickListener(new View.OnClickListener()
@@ -95,7 +93,7 @@ public class UsersFragment extends Fragment
         }
     }
 
-    private static class MyDataVHolder extends RecyclerView.ViewHolder
+    private class MyDataVHolder extends RecyclerView.ViewHolder
     {
         private final TextView textView;
         private final ConstraintLayout userView;

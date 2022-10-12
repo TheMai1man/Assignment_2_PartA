@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity
@@ -30,6 +29,7 @@ public class MainActivity extends AppCompatActivity
                 if(userList != null)
                 {
                     //Users Fragment loads on start
+
                     FragmentManager fm = getSupportFragmentManager();
                     fm.beginTransaction()
                             .replace(R.id.frameLayout, UsersFragment.class, null)
