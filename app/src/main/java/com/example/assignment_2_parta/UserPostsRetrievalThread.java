@@ -14,6 +14,7 @@ public class UserPostsRetrievalThread extends Thread
     private final String baseUrl;
     private final RemoteUtilities remoteUtilities;
     private final CommonData mViewModel;
+    private final Activity uiActivity;
 
     public UserPostsRetrievalThread(Activity uiActivity, CommonData mViewModel, String userId)
     {
@@ -21,6 +22,7 @@ public class UserPostsRetrievalThread extends Thread
         baseUrl = "https://jsonplaceholder.typicode.com/posts/";
         remoteUtilities = RemoteUtilities.getInstance(uiActivity);
         this.mViewModel = mViewModel;
+        this.uiActivity = uiActivity;
     }
 
     public void run()
@@ -30,19 +32,31 @@ public class UserPostsRetrievalThread extends Thread
 
         try
         {
+            //get list of posts from json placeholder
             JSONArray jUserPosts = new JSONArray(download);
 
+            //for each post
             for(int ii = 0; ii < jUserPosts.length(); ii++)
             {
+                //get details of the post
                 JSONObject jPost = jUserPosts.getJSONObject(ii);
 
                 String title = jPost.getString("title");
                 String body = jPost.getString("body");
 
+                //add post to list
                 data.add(new Post(title, body));
             }
 
-            mViewModel.setPostList(data);
+            uiActivity.runOnUiThread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    mViewModel.setPostList(data);
+                }
+            });
+
         }
         catch(JSONException e)
         {

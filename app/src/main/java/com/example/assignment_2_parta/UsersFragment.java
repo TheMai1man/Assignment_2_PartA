@@ -8,8 +8,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,6 +80,7 @@ public class UsersFragment extends Fragment
                 public void onClick(View view)
                 {
                     mViewModel.setSelectedUser(user);
+
                     FragmentManager fm = requireActivity().getSupportFragmentManager();
                     fm.beginTransaction()
                             .replace(R.id.frameLayout, UserDetailsFragment.class, null)
@@ -93,7 +92,7 @@ public class UsersFragment extends Fragment
         }
     }
 
-    private class MyDataVHolder extends RecyclerView.ViewHolder
+    private static class MyDataVHolder extends RecyclerView.ViewHolder
     {
         private final TextView textView;
         private final ConstraintLayout userView;

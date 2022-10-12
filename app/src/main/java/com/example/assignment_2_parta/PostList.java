@@ -1,10 +1,11 @@
 package com.example.assignment_2_parta;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PostList
 {
-    private List<Post> postList;
+    private List<Post> postList = new ArrayList<>();
 
     public PostList() {}
 

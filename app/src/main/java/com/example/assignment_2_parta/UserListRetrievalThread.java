@@ -2,8 +2,6 @@ package com.example.assignment_2_parta;
 
 import android.app.Activity;
 import android.net.Uri;
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,10 +9,10 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class UserListRetrievalThread extends Thread
 {
-    private String baseUrl;
-    private RemoteUtilities remoteUtilities;
-    private CommonData mViewModel;
-    private Activity uiActivity;
+    private final String baseUrl;
+    private final RemoteUtilities remoteUtilities;
+    private final CommonData mViewModel;
+    private final Activity uiActivity;
 
     public UserListRetrievalThread(Activity uiActivity, CommonData mViewModel)
     {
