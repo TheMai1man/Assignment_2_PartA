@@ -2,7 +2,6 @@ package com.example.assignment_2_parta;
 
 import android.app.Activity;
 import android.net.Uri;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,10 +10,10 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class UserPostsRetrievalThread extends Thread
 {
-    private String userId;
-    private String baseUrl;
-    private RemoteUtilities remoteUtilities;
-    private CommonData mViewModel;
+    private final String userId;
+    private final String baseUrl;
+    private final RemoteUtilities remoteUtilities;
+    private final CommonData mViewModel;
 
     public UserPostsRetrievalThread(Activity uiActivity, CommonData mViewModel, String userId)
     {
@@ -39,9 +38,22 @@ public class UserPostsRetrievalThread extends Thread
 
                 String title = jPost.getString("title");
                 String body = jPost.getString("body");
+
+                data.add(new Post(title, body));
             }
+
+            mViewModel.setPostList(data);
         }
         catch(JSONException e)
+        {
+            e.printStackTrace();
+        }
+
+        try
+        {
+            Thread.sleep(3000);
+        }
+        catch(Exception e)
         {
             e.printStackTrace();
         }
@@ -53,7 +65,7 @@ public class UserPostsRetrievalThread extends Thread
         Uri.Builder url = Uri.parse(baseUrl).buildUpon();
         url.appendQueryParameter("userId", userId);
         String urlString = url.build().toString();
-        HttpsURLConnection conn = remoteUtilities.openConnection(conn);
+        HttpsURLConnection conn = remoteUtilities.openConnection(urlString);
         if(conn!=null)
         {
             if(remoteUtilities.isConnectionOkay(conn))

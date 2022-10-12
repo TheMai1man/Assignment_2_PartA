@@ -2,6 +2,8 @@ package com.example.assignment_2_parta;
 
 import android.app.Activity;
 import android.net.Uri;
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,12 +14,14 @@ public class UserListRetrievalThread extends Thread
     private String baseUrl;
     private RemoteUtilities remoteUtilities;
     private CommonData mViewModel;
+    private Activity uiActivity;
 
     public UserListRetrievalThread(Activity uiActivity, CommonData mViewModel)
     {
         baseUrl = "https://jsonplaceholder.typicode.com/users/";
         remoteUtilities = RemoteUtilities.getInstance(uiActivity);
         this.mViewModel = mViewModel;
+        this.uiActivity = uiActivity;
     }
 
     public void run()
@@ -55,7 +59,15 @@ public class UserListRetrievalThread extends Thread
                 data.add( new User(id, username, phone, email, address, website, details) );
             }
 
-            mViewModel.setUserList(data);
+            uiActivity.runOnUiThread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    mViewModel.setUserList(data);
+                }
+            });
+
         }
         catch(JSONException e)
         {

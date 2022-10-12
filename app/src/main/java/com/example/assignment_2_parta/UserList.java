@@ -1,10 +1,11 @@
 package com.example.assignment_2_parta;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserList
 {
-    private List<User> userList;
+    private List<User> userList = new ArrayList<>();
 
     public UserList() {}
 

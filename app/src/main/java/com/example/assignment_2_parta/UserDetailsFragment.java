@@ -30,12 +30,20 @@ public class UserDetailsFragment extends Fragment
     {
         mViewModel = new ViewModelProvider(requireActivity()).get(CommonData.class);
 
-        username = (TextView) ui.findViewById(R.id.usernameText);
-        phone = (TextView) ui.findViewById(R.id.phoneText);
-        email = (TextView) ui.findViewById(R.id.emailText);
-        address = (TextView) ui.findViewById(R.id.addressText);
-        website = (TextView) ui.findViewById(R.id.websiteText);
-        details = (TextView) ui.findViewById(R.id.detailsText);
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_user_details, ui, false);
+    }
+
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState)
+    {
+        super.onViewCreated(view, savedInstanceState);
+
+        username = (TextView) view.findViewById(R.id.usernameText);
+        phone = (TextView) view.findViewById(R.id.phoneText);
+        email = (TextView) view.findViewById(R.id.emailText);
+        address = (TextView) view.findViewById(R.id.addressText);
+        website = (TextView) view.findViewById(R.id.websiteText);
+        details = (TextView) view.findViewById(R.id.detailsText);
 
         User user = mViewModel.getSelectedUser();
 
@@ -45,14 +53,6 @@ public class UserDetailsFragment extends Fragment
         address.setText( user.getAddress() );
         website.setText( user.getWebsite() );
         details.setText( user.getDetails() );
-
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_details, ui, false);
-    }
-
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState)
-    {
-        super.onViewCreated(view, savedInstanceState);
 
         postsButton = (Button) view.findViewById(R.id.postsButton);
         postsButton.setOnClickListener(new View.OnClickListener()
