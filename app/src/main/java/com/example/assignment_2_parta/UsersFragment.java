@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,10 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class UsersFragment extends Fragment
 {
@@ -30,6 +25,9 @@ public class UsersFragment extends Fragment
     {
         super.onCreate(savedInstanceState);
         mViewModel = new ViewModelProvider(requireActivity()).get(CommonData.class);
+        data = new UserList();
+
+
         data = mViewModel.getUserList();
     }
 
@@ -53,17 +51,17 @@ public class UsersFragment extends Fragment
 
     private class MyAdapter extends RecyclerView.Adapter<MyDataVHolder>
     {
-        UserList data;
+        UserList userList;
 
-        public MyAdapter(UserList data)
+        public MyAdapter(UserList value)
         {
-            this.data = data;
+            userList = value;
         }
 
         @Override
         public int getItemCount()
         {
-            return this.data.size();
+            return userList.size();
         }
 
         @NonNull
@@ -77,7 +75,7 @@ public class UsersFragment extends Fragment
         @Override
         public void onBindViewHolder(MyDataVHolder vh, int index)
         {
-            User user = this.data.get(index);
+            User user = userList.get(index);
             vh.bind(user);
 
             vh.userView.setOnClickListener(new View.OnClickListener()

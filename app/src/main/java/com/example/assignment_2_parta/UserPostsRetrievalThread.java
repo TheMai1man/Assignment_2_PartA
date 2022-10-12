@@ -10,14 +10,12 @@ public class UserPostsRetrievalThread extends Thread
     private final String userId;
     private final String baseUrl;
     private final RemoteUtilities remoteUtilities;
-    private final SearchResponseViewModel viewModel;
 
-    public UserPostsRetrievalThread(String userId, Activity uiActivity, SearchResponseViewModel viewModel)
+    public UserPostsRetrievalThread(String userId, Activity uiActivity)
     {
         this.userId = userId;
         baseUrl = "https://jsonplaceholder.typicode.com/posts/";
         remoteUtilities = RemoteUtilities.getInstance(uiActivity);
-        this.viewModel = viewModel;
     }
 
     public void run()
@@ -35,8 +33,6 @@ public class UserPostsRetrievalThread extends Thread
                     Thread.sleep(3000);
                 }
                 catch( Exception e ) {}
-
-                viewModel.setResponse(response);
             }
         }
     }

@@ -105,8 +105,7 @@ public class RemoteUtilities
         try
         {
             InputStream input = conn.getInputStream();
-            byte[] byteData = IOUtils.toByteArray(input);
-            data = new String(byteData, StandardCharsets.UTF_8);
+            data = IOUtils.toString(input, StandardCharsets.UTF_8);
         }
         catch( IOException e )
         {
